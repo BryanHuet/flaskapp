@@ -1,0 +1,29 @@
+services:
+  flaskapp:
+    image: flaskapp:latest
+    container_name: flaskapp
+    volumes:
+      - ./html:/var/www/html
+      - ./apache/ports.conf:/etc/apache2/ports.conf
+      - ./python/app.wsgi:/var/www/html/app.wsgi
+    networks:
+      proxy_network:
+        ipv4_address: 172.30.0.8
+      bdd_network:
+  
+  haproxy:
+    image: haproxy
+    container_name: flaskapp-haproxy
+    volumes:
+      - ./docker/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    ports:
+      - 80:80
+    networks:
+      proxy_network:
+        ipv4_address: 172.30.0.7
+  
+networks:
+  bdd_network:
+    external: true
+  proxy_network:
+    external: true
