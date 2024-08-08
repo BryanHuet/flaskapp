@@ -5,7 +5,6 @@ services:
     volumes:
       - ./html:/var/www/html
       - ./apache/ports.conf:/etc/apache2/ports.conf
-      - ./python/app.wsgi:/var/www/html/app.wsgi
     networks:
       proxy_network:
         ipv4_address: 172.30.0.8
