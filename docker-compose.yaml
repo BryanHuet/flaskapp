@@ -4,6 +4,8 @@ services:
     container_name: flaskapp
     volumes:
       - ./html:/var/www/html
+      - ./apache/apache2.conf://etc/apache2/apache2.conf
+      - ./apache/flaskapp.conf:/etc/apache2/sites-available/flaskapp.conf
       - ./apache/ports.conf:/etc/apache2/ports.conf
     networks:
       proxy_network:

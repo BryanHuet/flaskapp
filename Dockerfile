@@ -37,11 +37,17 @@ ENV PATH="/wkdir/venv/bin:$PATH"
 RUN a2enmod rewrite
 RUN a2enmod wsgi
 
-COPY apache/custom-apache.conf /etc/apache2/sites-available/000-default.conf
+COPY apache/flaskapp.conf /etc/apache2/sites-available/flaskapp.conf
 COPY apache/apache2.conf /etc/apache2/apache2.conf
 
-# Create necessary directories
+RUN a2ensite flaskapp
+
+# Create necessary directories and setup rights
 RUN mkdir -p ${APACHE_RUN_DIR} ${APACHE_LOCK_DIR} ${APACHE_LOG_DIR}
+RUN touch ${APACHE_LOG_DIR}/flask_app.log
+RUN chown root:www-data ${APACHE_LOG_DIR}
+RUN chown www-data:www-data ${APACHE_LOG_DIR}/flask_app.log
+
 
 STOPSIGNAL SIGWINCH
 EXPOSE 8080
